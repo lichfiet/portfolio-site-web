@@ -1,170 +1,92 @@
-import { useState, useRef, useEffect } from 'react';
+import projectsData from '../projects.json';
 
+function ProjectCard({ project }) {
+  return (
+    <article className="rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+      <div className="aspect-video bg-neutral-300 dark:bg-neutral-700 overflow-hidden flex items-center justify-center">
+        {project.imgSrc ? (
+          <img
+            src={project.imgSrc}
+            alt={project.name}
+            className="w-full h-full object-cover object-center"
+          />
+        ) : (
+          <span className="text-4xl font-semibold text-neutral-500 dark:text-neutral-500 select-none" aria-hidden>
+            {project.name.slice(0, 2).toUpperCase()}
+          </span>
+        )}
+      </div>
+      <div className="p-5 flex flex-col flex-grow">
+        <h2 className="text-xl font-semibold text-black dark:text-white mb-2">
+          {project.name}
+        </h2>
+        <div className="space-y-2 flex-grow">
+          {project.about.map((paragraph, i) => (
+            <p key={i} className="text-sm text-neutral-700 dark:text-neutral-300 indent-2">
+              {paragraph}
+            </p>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {project.techStack.map((tech) => (
+            <span
+              key={tech}
+              className="text-xs px-2.5 py-1 rounded-full bg-neutral-300 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-black dark:text-white bg-neutral-300 dark:bg-neutral-600 hover:bg-neutral-400 dark:hover:bg-neutral-500 px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <span aria-hidden>↗</span>
+              View live
+            </a>
+          )}
+          {project.repos.map((repo) => (
+            <a
+              key={repo.name}
+              href={repo.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-white bg-neutral-800 dark:bg-neutral-600 hover:bg-neutral-700 dark:hover:bg-neutral-500 px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <i className="fab fa-github" aria-hidden />
+              {repo.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
 
-const Projects = function () {
-    const [activeProject, setActiveProject] = useState(null);
-    const [activeProjectData, setActiveProjectData] = useState({ name: "", imgSrc: "", about: [], techStack: [], ref: null, repos: [{ name: "", link: "" }] });
+function Projects() {
+  const projects = [...projectsData].sort(
+    (a, b) => new Date(b.started_date) - new Date(a.started_date)
+  );
 
-    const buttonRef = useRef(null);
-
-    const FileExplorer = () => {
-        return <>
-            <div className="flex justify-center items-center content-center" >
-                <iframe
-                    className="hidden w-full md:block iframe-mobile"
-                    src="https://files.trevorlichfield.com"
-                    title="File Explorer"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media"></iframe>
-                <img className="block md:hidden p-4" src="./file explorer.png"></img>
-            </div>
-        </>
-    };
-
-    const Project2 = () => {
-        return <>
-            <div className="flex justify-center items-center content-center" >
-                <iframe
-                    className="hidden w-full sm:block iframe-mobile bg-white"
-                    src="https://trevorlichfield.com/home"
-                    title="File Explorer"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media"></iframe>
-            </div>
-        </>
-    }
-
-    const Project3 = () => {
-        return <>
-            <img className={`self-center items-center mx-auto`} src='https://via.placeholder.com/1100x900'></img>
-        </>
-    }
-
-    const projects = [{
-        name: "File Explorer",
-        imgSrc: './explorer.png',
-        about: [
-            "It's a simple file explorer with enough features to manage all your files and folders. " + 
-            " As my first Fullstack project, it taught me everything I know about React.js. It uses " +
-            "an Express.js backend deployed on AWS EC2, an Amazon S3 bucket to store " +
-            "all the files and folders, and a React.js frontend deployed with AWS' Amplify for easy CI/CD, and " +
-            "SSL renewal."
-            ,
-            "My next steps for this project are to automate the CD for the backend, and setup a Kubernetes cluster on " +
-            "a separate EC2 instance, with ArgoCD for Gitops, and to then move the remainder of the project to " +
-            "Terraform."
-        ],
-        techStack: [
-            "React.js", "Express.js", "Amazon S3", "AWS EC2", "AWS Amplify", "Terraform"
-        ],
-        ref: buttonRef,
-        repos: [{
-            name: "Frontend", link: "https://github.com/lichfiet/file-explorer-web"
-        }, {
-            name: "Backend", link: "https://github.com/lichfiet/file-explorer-backend"
-        }, {
-            name: "Infrastructure", link: "https://github.com/lichfiet/file-explorer-infra"
-        }]
-    }, {
-        name: "Portfolio",
-        imgSrc: 'https://via.placeholder.com/600x300',
-        about: ["This was my second attempt at making a portfolio, and I wanted to have created the whole site from scratch. " +
-            "This was my first exposure to TailwindCSS and I loved using it. My goal was to focus on scaling for mobile to make the website useable on all plafforms. "],
-        techStack: ["Tech 1", "Tech 2", "Tech 3"],
-        ref: null,
-        repos: [{ name: "", link: "" }]
-    }, {
-        name: "Project 3",
-        imgSrc: 'https://via.placeholder.com/600x300',
-        about: ["This is a placeholder for Project 3"],
-        techStack: ["Tech 1", "Tech 2", "Tech 3"],
-        ref: null,
-        repos: [{ name: "", link: "" }]
-    }]
-
-    const ProjectSelector = (project) => {
-        if (activeProjectData.name === project) {
-            return
-        } else if (project === "File Explorer") {
-            setActiveProject(<FileExplorer />);
-            setActiveProjectData(projects[0]);
-
-        } else if (project === "Portfolio") {
-            setActiveProject(<Project2 />);
-            setActiveProjectData(projects[1]);
-        } else if (project === "Project 3") {
-            setActiveProject(<Project3 />);
-            setActiveProjectData(projects[2]);
-        }
-    }
-
-    const buttonCSS = "group py-3 px-2 m-2 hover:py-3 outline-none focus:outline focus:bg-neutral-500 outline-offset-0 hover:outline rounded-lg hover:outline-8 focus:outline-4 shadow-2xl transition-all duration-300 dark:bg-neutral-800  dark:hover:bg-neutral-500 hover:bg-neutral-200 bg-neutral-300 hover:outline-neutral-200 dark:hover:outline-neutral-400";
-    const h1CSS = "p-2 font-semibold text-lg group-focus:text-gray-300 group-hover:text-sm group-hover:p-1 transition-all duration-300 text-black dark:text-white";
-    const imgCSS = "rounded-xl h-0 group-hover:h-20 group-hover:aspect-video w-full transition-all duration-300";
-
-
-
-    return (
-
-        useEffect(() => {
-            ProjectSelector("File Explorer");
-            buttonRef.current.focus();
-        }, []),
-
-        <>
-            <div className="text-black dark:text-white container mx-auto block p-4 mb-4 rounded-3xl shadow-3xl">
-
-                <div className="projects-container container mx-auto block p-4 md:grid mb-4 rounded-3xl shadow-3xl" style={{ gridTemplateColumns: "1fr 3fr 2fr" }}>
-                    <nav className='hidden flex-col justify-start me-4 my-4 md:flex text-center' >
-                        <h1 className="text-xl font-semibold italic mb-4">Pick a project!</h1><i className="fa-solid fa-arrow-down"></i>
-                        {
-                            projects.map((btn) =>
-                                <button ref={btn.ref} key={btn.name} className={buttonCSS} onClick={() => { ProjectSelector(btn.name) }}>
-                                    <h1 className={h1CSS}>{btn.name}</h1>
-                                    <img className={imgCSS} src={btn.imgSrc}></img>
-                                </button>
-                            )
-                        }
-                        <h1 className="text-xl font-semibold italic mb-4">TBA..</h1>
-                    </nav>
-                    <div className="rounded-xl mr-4">
-                        {/** ACTIVE PROJECT AND NAME */}
-                        <h1 className="text-black dark:text-white font-semibold md:font-bold text-3xl md:text-4xl text-center">{activeProjectData.name}</h1>
-                        <div className="rounded-3xl shadow-3xl">
-                            {activeProject}
-                        </div>
-                    </div>
-                    <div className="p-4 bg-neutral-300 dark:bg-neutral-800 rounded-xl block">
-                        <div className="p-2">
-                            <h1 className="text-lg md:text-xl font-bold mb-1 underline">About This Project.</h1>
-                            {
-                                activeProjectData.about.map((p) => <p key={p} className="p-2 indent-2 text-sm md:text-base">{p}</p>)
-                            }
-                        </div>
-                        <div className="p-2">
-                            <p className="text-base md:text-lg font-bold">Tech Stack</p>
-                            <p className="list-disc">
-                                {
-                                    activeProjectData.techStack.map((tech) => tech + ", ")
-                                }
-                            </p>
-                        </div>
-                        <div className="flex flex-col p-6">
-                            {
-                                activeProjectData.repos.map((repo) => {
-                                    return (
-                                        <button className="bg-neutral-800 m-2 p-2 rounded-xl min-w-50">
-                                            <a key={repo.name} href={repo.link} className="text-white hover:text-gray-300 md:block"><i className="fab fa-github"></i> { repo.name } </a>
-                                        </button>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+  return (
+    <div className="text-black dark:text-white container mx-auto px-4 py-6 mb-4">
+      <header className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-center">Projects</h1>
+        <p className="text-center text-neutral-600 dark:text-neutral-400 mt-2 max-w-xl mx-auto">
+          A selection of things I’ve built and worked on.
+        </p>
+      </header>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((project) => (
+          <ProjectCard key={project.name} project={project} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default Projects;
-
-

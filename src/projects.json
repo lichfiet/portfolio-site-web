@@ -1,0 +1,85 @@
+[
+  {
+    "name": "File Explorer",
+    "imgSrc": "/explorer.png",
+    "about": [
+      "It's a simple file explorer with enough features to manage all your files and folders. As my first Fullstack project, it taught me everything I know about React.js. It uses an Express.js backend deployed on AWS EC2, an Amazon S3 bucket to store all the files and folders, and a React.js frontend deployed with AWS Amplify for easy CI/CD and SSL renewal.",
+      "My next steps for this project are to automate the CD for the backend, and setup a Kubernetes cluster on a separate EC2 instance, with ArgoCD for Gitops, and to then move the remainder of the project to Terraform."
+    ],
+    "techStack": ["React.js", "Express.js", "Amazon S3", "AWS EC2", "AWS Amplify", "Terraform"],
+    "repos": [
+      { "name": "Frontend", "link": "https://github.com/lichfiet/file-explorer-web" },
+      { "name": "Backend", "link": "https://github.com/lichfiet/file-explorer-backend" },
+      { "name": "Infrastructure", "link": "https://github.com/lichfiet/file-explorer-infra" }
+    ],
+    "started_date": "2024-01-01"
+  },
+  {
+    "name": "Portfolio",
+    "imgSrc": "/og.png",
+    "about": [
+      "This was my second attempt at making a portfolio, and I wanted to have created the whole site from scratch. This was my first exposure to TailwindCSS and I loved using it. My goal was to focus on scaling for mobile to make the website useable on all platforms."
+    ],
+    "techStack": ["React", "TailwindCSS", "Vite"],
+    "repos": [],
+    "started_date": "2024-06-01",
+    "liveUrl": "https://trevorlichfield.com"
+  },
+  {
+    "name": "Event Based Task Processing Framework for Infrastructure Automation",
+    "imgSrc": "",
+    "about": [
+      "To enable our internal customers to request infrastructure changes, I designed and deployed an asynchronous infrastructure management service, allowing anyone in the organization to manage the lifecycle of our software infrastructure, without the assistance of operations.",
+      "Written in Python, this project wraps the Celery orchestration framework, using custom Celery task primitives to enable higher levels of orchestration. It includes interfaces for retrying failures, chaining of tasks, log storage, custom task signature storage, function signature encryption, and a number of other features.",
+      "The goal of the project was to enable event-driven, asynchronous processing (avoiding lambda timeouts & compute costs) for our infrastructure management code, reducing the need to use managed EC2 instances, and give us the ability to scale to 0, minimizing costs at idle time."
+    ],
+    "techStack": ["Python", "Kubernetes", "Terraform"],
+    "repos": [],
+    "started_date": "2025-05-01"
+  },
+  {
+    "name": "Python Modularization & Documentation",
+    "imgSrc": "",
+    "about": [
+      "Associated with Lightspeed DMS. When I signed on for my current position, I was presented with a repository of Python tools, all stored in the root directory of one big repository, with many shared dependencies and responsibilities.",
+      "I was tasked with modularizing this code and publishing documentation. To accomplish this while retaining backwards compatibility, I devised a CI/CD method that allows module code to be stored in folders, with each folder treated as a separate project with independent CI. Scripts dynamically generate CI files for modules that had changed. The pipeline includes linting and testing, enabling portable, testable, and versioned code.",
+      "This flexibility has allowed a seamless migration to modularized code and sets us up to move modules into their own projects. A documentation site was deployed with MkDocs, with dynamic documentation generation from Python docstrings and custom markdown for better organization."
+    ],
+    "techStack": ["Python", "GitLab", "MkDocs", "CI/CD"],
+    "repos": [],
+    "started_date": "2025-02-01"
+  },
+  {
+    "name": "Postgres ERD with Inline Documentation",
+    "imgSrc": "",
+    "about": [
+      "Associated with Lightspeed DMS. In my support position, I and many others spent a lot of time on data validation with SQL, which is difficult when dealing with hundreds of tables and foreign keys in a large monolith. This project reduces time spent looking up foreign keys, deciphering enum values, and reverse-engineering the database schema.",
+      "Features include information pages for commonly queried tables, data types and enum values, an entity relationship graph, and inline DB documentation with references to the software. The backend uses the open-source ERD documentation service dbdiagram.io, with DBML and Markdown for table and field notes."
+    ],
+    "techStack": ["PostgreSQL", "DBML", "dbdiagram.io", "Software Documentation"],
+    "repos": [],
+    "started_date": "2023-08-01"
+  },
+  {
+    "name": "Support SQL Query Library",
+    "imgSrc": "",
+    "about": [
+      "Associated with Lightspeed DMS. This repository contains SQL queries written for support work. Most of the frequently accessed diagnostics were authored by me and are used on a near-daily basis to troubleshoot data issues and software setup issues.",
+      "With access to run SELECT queries, I built user-friendly diagnostics with search functionality—for example, bank deposit troubleshooting and management activity diagnostics. (Repository not public.)"
+    ],
+    "techStack": ["PostgreSQL", "SQL", "GitHub"],
+    "repos": [],
+    "started_date": "2023-08-01"
+  },
+  {
+    "name": "Monolith Uptime Tracking Dashboard",
+    "imgSrc": "",
+    "about": [
+      "Associated with Lightspeed DMS. This project tracks the uptime of our core monolith, which has thousands of deployed instances. A method was devised to sanitize incident data, store deployment metrics, and combine them to provide uptime data for any period.",
+      "The implementation uses Datadog's incident API, DynamoDB, a FastAPI REST API, and a React.js frontend to provide incident details and uptime metrics, with graphs for visual analysis."
+    ],
+    "techStack": ["FastAPI", "Datadog", "DynamoDB", "React.js"],
+    "repos": [],
+    "started_date": "2024-06-01"
+  }
+]
